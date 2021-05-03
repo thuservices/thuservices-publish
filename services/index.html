@@ -890,8 +890,8 @@
 <p>值得注意的是，与清华无关的流量依旧按照原有路由发出，此行为与 Windows 下不同。（此项需求证）</p>
 <h2 id="_1">上网认证<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <h3 id="_2">校园网基础知识<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
-<p><a href="https://its.tsinghua.edu.cn/helpsystem/train/CampusNetworkLectureNotes201909.pdf">清华大学校园网使用简介</a></p>
-<p><a href="https://its.tsinghua.edu.cn/helpsystem/wirednetwork/RealNameAuthenticationFAQ20190614.pdf">清华大学校园网有线局域网用户准入系统使用说明（问与答）</a></p>
+<p><a href="https://its.tsinghua.edu.cn/helpsystem/train/CampusNetworkLectureNotes201909.pdf">清华大学校园网使用简介</a>（由于网页升级链接已失效，可参阅本站的<a href="../file/CampusNetworkLectureNotes201909.pdf">备份</a>）</p>
+<p><a href="https://its.tsinghua.edu.cn/helpsystem/wirednetwork/RealNameAuthenticationFAQ20190614.pdf">清华大学校园网有线局域网用户准入系统使用说明（问与答）</a>（由于网页升级链接已失效，可参阅本站的<a href="../file/RealNameAuthenticationFAQ20190614.pdf">备份</a>）</p>
 <p>上述文件太长不看版：在校园网中上网分为两步，一步是准入，另一步是准出。</p>
 <p>没有准入与准出时，机器只能 ping 通 <code>166.111.8.28</code> 与 <code>2402:f000:1:801::8:28</code>，如果你有相应 v4 与 v6 地址。校内其他地址不通。</p>
 <p>对于 IPv4 而言，当有准入而没有准出时，机器可以 ping 通校内机器，但不能 ping 通校外机器，即不能上外网。只有当有准入而且有准出时，机器可以连接外网。</p>
@@ -938,7 +938,7 @@ auth-thu online <span class="c1"># 保持机器在线</span>
 <p>尤其要注意的是，不能直接访问 auth4/auth6 来进行认证（参考问与答），需要通过跳转的方式来访问 auth4/auth6 以获取正确的 ac_id. 一般情况下可以访问 info/learn 来跳转，也可通过 3.3.3.3 和 [3:3:3::3] 来跳转。后者对于三层接入的用户来说是一个较为方便的访问 auth6 的方案。</p>
 <h3 id="tsinghua-secure">Tsinghua-Secure<a class="headerlink" href="#tsinghua-secure" title="Permanent link">&para;</a></h3>
 <p>如果是校内环境，首先连接 <code>Tsinghua-Secure无线网使用指南</code> 进入 <a href="https://usereg.tsinghua.edu.cn">usereg.tsinghua.edu.cn</a> , 登录后在 <code>自注册及修改口令处</code> 设置 Tsinghua-Secure 使用的密码，此密码不需要与 info 密码相同。</p>
-<p>设置好后，可以使用 <code>NetworkManager</code> 连接该 Wifi，可以参考 its 的文档 <a href="https://its.tsinghua.edu.cn/upload_files/file/20181218/1545119054386022345.pdf">清华大学无线校园网 802.1x 认证登录客户端配置说明</a></p>
+<p>设置好后，可以使用 <code>NetworkManager</code> 连接该 Wifi，可以参考 its 的文档 <a href="https://its.tsinghua.edu.cn/upload_files/file/20181218/1545119054386022345.pdf">清华大学无线校园网 802.1x 认证登录客户端配置说明</a>（由于网页升级链接已失效）</p>
 <p>也可使用 <code>wpa_supplicant</code> 完成相应 wifi 连接。安装 <code>wpa_supplicant</code>，编辑 <code>/etc/wpa_supplicant/wpa_supplicant-nl80211-XXXX.conf</code>， 其中 <code>XXXX</code> 是本机网卡名称，输入以下配置</p>
 <div class="highlight"><pre><span></span><code>ctrl_interface=/var/run/wpa_supplicant
 update_config=1
@@ -1076,7 +1076,7 @@ Apr 02 07:00:34 Zenith dhcpcd[497]: enp3s0: adding address 2402:f000:4:3:888:192
 <div class="md-source-date">
   <small>
     
-      最后更新: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">2021年5月1日</span>
+      最后更新: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">2021年5月3日</span>
     
   </small>
 </div>
