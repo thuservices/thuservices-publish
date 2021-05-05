@@ -435,6 +435,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#30" class="md-nav__link">
+    30分钟无流量掉准入
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#_11" class="md-nav__link">
     掉准出后无法准出
   </a>
@@ -755,6 +762,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#30" class="md-nav__link">
+    30分钟无流量掉准入
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#_11" class="md-nav__link">
     掉准出后无法准出
   </a>
@@ -891,6 +905,7 @@
 <h2 id="_1">上网认证<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <h3 id="_2">校园网基础知识<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
 <p><a href="https://its.tsinghua.edu.cn/helpsystem/train/CampusNetworkLectureNotes201909.pdf">清华大学校园网使用简介</a>（由于网页升级链接已失效，可参阅本站的<a href="../file/CampusNetworkLectureNotes201909.pdf">备份</a>）</p>
+<p><a href="http://166.111.5.8/commsoft/helpsystem/wirednetwork/RealNameAuthentication20190121.pdf">准入上网使用说明</a>（本站<a href="../file/RealNameAuthentication20190121.pdf">备份</a>）</p>
 <p><a href="https://its.tsinghua.edu.cn/helpsystem/wirednetwork/RealNameAuthenticationFAQ20190614.pdf">清华大学校园网有线局域网用户准入系统使用说明（问与答）</a>（由于网页升级链接已失效，可参阅本站的<a href="../file/RealNameAuthenticationFAQ20190614.pdf">备份</a>）</p>
 <p>上述文件太长不看版：在校园网中上网分为两步，一步是准入，另一步是准出。</p>
 <p>没有准入与准出时，机器只能 ping 通 <code>166.111.8.28</code> 与 <code>2402:f000:1:801::8:28</code>，如果你有相应 v4 与 v6 地址。校内其他地址不通。</p>
@@ -938,7 +953,7 @@ auth-thu online <span class="c1"># 保持机器在线</span>
 <p>尤其要注意的是，不能直接访问 auth4/auth6 来进行认证（参考问与答），需要通过跳转的方式来访问 auth4/auth6 以获取正确的 ac_id. 一般情况下可以访问 info/learn 来跳转，也可通过 3.3.3.3 和 [3:3:3::3] 来跳转。后者对于三层接入的用户来说是一个较为方便的访问 auth6 的方案。</p>
 <h3 id="tsinghua-secure">Tsinghua-Secure<a class="headerlink" href="#tsinghua-secure" title="Permanent link">&para;</a></h3>
 <p>如果是校内环境，首先连接 <code>Tsinghua-Secure无线网使用指南</code> 进入 <a href="https://usereg.tsinghua.edu.cn">usereg.tsinghua.edu.cn</a> , 登录后在 <code>自注册及修改口令处</code> 设置 Tsinghua-Secure 使用的密码，此密码不需要与 info 密码相同。</p>
-<p>设置好后，可以使用 <code>NetworkManager</code> 连接该 Wifi，可以参考 its 的文档 <a href="https://its.tsinghua.edu.cn/upload_files/file/20181218/1545119054386022345.pdf">清华大学无线校园网 802.1x 认证登录客户端配置说明</a>（由于网页升级链接已失效）</p>
+<p>设置好后，可以使用 <code>NetworkManager</code> 连接该 Wifi，可以参考 its 的文档 <a href="https://its.tsinghua.edu.cn/info/1333/2318.htm">清华大学无线校园网 802.1x 认证登录客户端配置说明</a>（本站<a href="../file/tsinghua-secure-config.pdf">备份</a>）</p>
 <p>也可使用 <code>wpa_supplicant</code> 完成相应 wifi 连接。安装 <code>wpa_supplicant</code>，编辑 <code>/etc/wpa_supplicant/wpa_supplicant-nl80211-XXXX.conf</code>， 其中 <code>XXXX</code> 是本机网卡名称，输入以下配置</p>
 <div class="highlight"><pre><span></span><code>ctrl_interface=/var/run/wpa_supplicant
 update_config=1
@@ -1034,6 +1049,8 @@ Apr 02 07:00:34 Zenith dhcpcd[497]: enp3s0: adding address 2402:f000:4:3:888:192
 00:01:00:01:26:53:6d:9d:ff:ff:ff:ff:ff:ff
 </code></pre></div>
 <p>若以 <code>00:01</code> 开头，则表明为 DUID-LLT，否则（或文件不存在）需要改为上述格式。同时需要检查一下最后的 <code>ff:ff:ff:ff:ff:ff</code> 是否为相关网卡的MAC地址，如果不是需要更改为相应地址。</p>
+<h3 id="30">30分钟无流量掉准入<a class="headerlink" href="#30" title="Permanent link">&para;</a></h3>
+<p>根据之前提到的《准入上网使用说明》，计算机长时间（目前为 30 分钟）不使用网络时，认证系统会关闭其网络连接；服务器如有必要可每 10 分钟 ping 1 次 ping.tsinghua.edu.cn。</p>
 <h3 id="_11">掉准出后无法准出<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h3>
 <p>某些长久运行的机器可能掉准出，即无法连接校外网。这种情况下，不少同学可能在 usereg 或命令行中尝试 <strong>准出</strong> ，但是发现准出不成功。 <strong>在 usereg 上，即使显示机器在准出表中，在机器上也无法访问校外网</strong> 。我们认为这是校园网的某些设备的状态同步可能出现了问题。</p>
 <p>对于这种问题，有一种可能的解决尝试，就是先将登出 <strong>准入</strong> ，然后再准入并准出，这样可能会刷新学校某些机器的状态，从而使得准出能成功。注意！登出准入是非常危险的操作！您可能会经历 ssh 断线，从而与机器永久失联！请在充分了解该操作的意义与知道如何在登出准入后恢复准入的情况下操作！</p>
@@ -1076,7 +1093,7 @@ Apr 02 07:00:34 Zenith dhcpcd[497]: enp3s0: adding address 2402:f000:4:3:888:192
 <div class="md-source-date">
   <small>
     
-      最后更新: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">2021年5月3日</span>
+      最后更新: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">2021年5月5日</span>
     
   </small>
 </div>
