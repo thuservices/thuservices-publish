@@ -990,11 +990,11 @@ auth-thu online <span class="c1"># 保持机器在线</span>
 <h4 id="_5">自动认证<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h4>
 <p>对于系统管理员来说，可能存在服务器实现自动认证的需求。</p>
 <p>下载好文件以后请合理放置在相应目录（如 /usr/local/bin）下，同时将配置文件放在合理目录下，即可使用</p>
-<p>要做到自动 <strong>准入</strong>，需将其中附带的 <code>goauthing.service</code> 与 <code>goauthing.timer</code> 放置 <code>/usr/lib/systemd/system/</code> 文件夹下 ，并调整相应内容以符合程序文件以及配置文件的路径，使用</p>
-<div class="highlight"><pre><span></span><code>$ systemctl <span class="nb">enable</span> goauthing.service goauthing.timer
+<p>要做到自动 <strong>准出</strong>，需将其中附带的 <code>goauthing.service</code> 或 <code>goauthing@.service</code> 放置 <code>/etc/systemd/system/</code> 文件夹下 ，并调整相应内容以符合程序文件以及配置文件的路径，使用</p>
+<div class="highlight"><pre><span></span><code>$ systemctl <span class="nb">enable</span> goauthing.service
 </code></pre></div>
-<p>启动相应服务，即可达到自动认证的目的。如果要实现账户信息储存在用户家目录中而不是 <code>/etc</code> 中，可以参考 <code>goauthing@.{service,timer}</code>。</p>
-<p>如果要实现 <code>v6</code> 的自动准入，可以拷贝并调整这些服务文件的一些参数，需要调整的参数请参考软件的文档。如果要实现自动准出，同样请参考相应参数修改。</p>
+<p>启动相应服务，即可达到自动认证的目的。如果要实现账户信息储存在用户家目录中而不是 <code>/etc</code> 中，可以参考 <code>goauthing@.service</code>。</p>
+<p>如果要实现 <code>v6</code> 的自动准入，可参考 <code>goauthing6.service</code> 和 <code>goauthing6@.service</code>。如果只要 v4 的自动准入，需要将 <code>goauthing.service</code> 中的 <code>auth</code> 变为 <code>auth -C</code>，且删除 <code>login</code> 一行。</p>
 <p>如果有打包者将此打包，请 PR。目前在 AUR 中已存在 <code>auth-thu</code> 包。</p>
 <h3 id="_6">远端服务器代认证<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
 <p>（从笔者的经历来看，usereg 的对准入准出成功和失败的反馈较少，建议采用命令行以及网页认证，而只将 usereg 作为状态面板使用）</p>
@@ -1155,7 +1155,7 @@ Apr 02 07:00:34 Zenith dhcpcd[497]: enp3s0: adding address 2402:f000:4:3:888:192
 <div class="md-source-date">
   <small>
     
-      最后更新: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">September 8, 2021</span>
+      最后更新: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">September 9, 2021</span>
     
   </small>
 </div>
