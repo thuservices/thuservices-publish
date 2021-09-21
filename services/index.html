@@ -484,8 +484,35 @@
         
           <li class="md-nav__item">
   <a href="#terminal" class="md-nav__link">
-    魔改 Terminal 客户端
+    使用 Terminal 客户端
   </a>
+  
+    <nav class="md-nav" aria-label="使用 Terminal 客户端">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#token" class="md-nav__link">
+    获取 Token
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#token_1" class="md-nav__link">
+    替换部分文件实现 Token 登录
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#terminal_1" class="md-nav__link">
+    编译 Terminal 客户端
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -849,8 +876,35 @@
         
           <li class="md-nav__item">
   <a href="#terminal" class="md-nav__link">
-    魔改 Terminal 客户端
+    使用 Terminal 客户端
   </a>
+  
+    <nav class="md-nav" aria-label="使用 Terminal 客户端">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#token" class="md-nav__link">
+    获取 Token
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#token_1" class="md-nav__link">
+    替换部分文件实现 Token 登录
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#terminal_1" class="md-nav__link">
+    编译 Terminal 客户端
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -1124,8 +1178,32 @@ Apr 02 07:00:34 Zenith dhcpcd[497]: enp3s0: adding address 2402:f000:4:3:888:192
 <div class="highlight"><pre><span></span><code>pacman -S seafile-client
 </code></pre></div>
 <p>而非 <code>pacman -S seafile</code>，此包为 Terminal 客户端。其余发行版请自行找到对应包。</p>
-<h3 id="terminal">魔改 Terminal 客户端<a class="headerlink" href="#terminal" title="Permanent link">&para;</a></h3>
-<p>在<a href="https://github.com/prnake/Thu-Toolbox">该项目</a>中存在一个文件夹 seafile，其中指出了使用 Token 登录清华云盘的办法，可以避免使用独立密码。</p>
+<h3 id="terminal">使用 Terminal 客户端<a class="headerlink" href="#terminal" title="Permanent link">&para;</a></h3>
+<p>Terminal 客户端在 8.0.4 版本后以后支持使用 Token 进行同步，你可以在 <a href="https://help.seafile.com/syncing_client/install_linux_client/">install_linux_client</a> 中找到大部分发行版 AMD64 架构的源，如果你所使用的包管理器中 <code>seafile</code> 或 <code>seafile-cli</code> 版本号低于 <code>8.0.4</code>，可以安装并参考后面替换部分文件的方法，也可以直接手动编译最新版。</p>
+<h4 id="token">获取 Token<a class="headerlink" href="#token" title="Permanent link">&para;</a></h4>
+<p>在浏览器中登录清华云盘，Cookie 中的 <code>seahub_auth</code> 应该为 <code>用户名（学号@tsinghua.edu.cn）@Token</code> 的模式，最后一段即为 Token 。每个账户的 Token 是唯一的，并且不会过期。</p>
+<p>在能正常运行 <code>seaf-cli</code> 后，可以使用命令行进行同步操作</p>
+<div class="highlight"><pre><span></span><code>seaf-cli init -d ~
+seaf-cli start
+seaf-cli sync -l &lt;library-id&gt; -s https://cloud.tsinghua.edu.cn -d &lt;place-directory&gt; -T &lt;token&gt;
+seaf-cli desync -d &lt;existing-folder&gt;
+</code></pre></div>
+<h4 id="token_1">替换部分文件实现 Token 登录<a class="headerlink" href="#token_1" title="Permanent link">&para;</a></h4>
+<p><code>seaf-cli</code> 实质上是通过 <code>pysearpc</code> 与 <code>seaf-daemon</code> 通讯，因此大部分发行版默认源中较低版本的 <code>seafile</code> 在只替换 <code>seaf-cli</code> 的情况下也能正常工作。这里提供一种安装 Terminal 客户端后替换 <code>seaf-cli</code> 实现 Token 登录的简单办法。</p>
+<div class="highlight"><pre><span></span><code>git clone https://github.com/haiwen/seafile
+cd seafile
+cp app/seaf-cli /usr/bin/seaf-cli
+chmod +x /usr/bin/seaf-cli
+cp -r python/seafile $(python3 -m site --user-site)
+</code></pre></div>
+<h4 id="terminal_1">编译 Terminal 客户端<a class="headerlink" href="#terminal_1" title="Permanent link">&para;</a></h4>
+<p>具体的编译流程可以参考 <a href="https://manual.seafile.com/build_seafile/linux/">build_seafile</a>，但要注意几点：</p>
+<ul>
+<li>下载并编译每个仓库中的最新源码或最新的 release</li>
+<li>可以忽略文档中的 <code>ccnet</code> 部分，仓库已经消失并且不存在相关依赖</li>
+<li>make 有概率失败，可以多来几次</li>
+<li>如果安装完成后 <code>seaf-cli</code> 报错，例如 <code>No module named 'seafile'</code> 可以参考上一节手动复制 <code>seafile</code> 包</li>
+</ul>
 <h3 id="chrome">Chrome 提醒下载的文件危险<a class="headerlink" href="#chrome" title="Permanent link">&para;</a></h3>
 <p>此现象可能是奇妙同学的奇妙操作导致 Chrome 讲清华云盘域名标记，进而所有文件下载都会提醒可能有危险并阻止。</p>
 <p>请忽略此提醒。当然，如果您下载的真的是奇妙的文件，请您自查。</p>
@@ -1155,7 +1233,7 @@ Apr 02 07:00:34 Zenith dhcpcd[497]: enp3s0: adding address 2402:f000:4:3:888:192
 <div class="md-source-date">
   <small>
     
-      最后更新: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">September 20, 2021</span>
+      最后更新: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">September 21, 2021</span>
     
   </small>
 </div>
@@ -1166,7 +1244,7 @@ Apr 02 07:00:34 Zenith dhcpcd[497]: enp3s0: adding address 2402:f000:4:3:888:192
 
 <div class="md-source-date">
     <small>
-        作者: <span class='git-page-authors git-authors'><a href='mailto:i@zenithal.me'>ZenithalHourlyRate</a></span>
+        作者: <span class='git-page-authors git-authors'><a href='mailto:i@zenithal.me'>Zenithal</a></span>
     </small>
 </div>
 
