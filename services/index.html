@@ -1077,7 +1077,7 @@ auth-thu online <span class="c1"># 保持机器在线</span>
 </code></pre></div>
 <p>启动相应服务，即可达到自动认证的目的。如果要实现账户信息储存在用户家目录中而不是 <code>/etc</code> 中，可以参考 <code>goauthing@.service</code>。</p>
 <p>如果要实现 <code>v6</code> 的自动准入，可参考 <code>goauthing6.service</code> 和 <code>goauthing6@.service</code>。如果只要 v4 的自动准入，需要将 <code>goauthing.service</code> 中的 <code>auth</code> 变为 <code>auth -C</code>，且删除 <code>login</code> 一行。</p>
-<p>如果有打包者将此打包，请 PR。目前在 AUR 中已存在 <code>auth-thu</code> 包。</p>
+<p>如果有打包者将此打包，请 PR。目前在 AUR 中存在 <code>auth-thu-bin</code> 包（<code>auth-thu</code> 包已经过时）。</p>
 <h3 id="_6">远端服务器代认证<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
 <p>（从笔者的经历来看，usereg 的对准入准出成功和失败的反馈较少，建议采用命令行以及网页认证，而只将 usereg 作为状态面板使用）</p>
 <p>在某些服务器上无法使用浏览器打开 <a href="https://net.tsinghua.edu.cn">net.tsinghua.edu.cn</a> 来认证，只能使用 <a href="### 命令行认证 自动认证">命令行工具</a> 或「准入代认证」的方式来实现准入。</p>
@@ -1286,7 +1286,7 @@ cp -r python/seafile $(python3 -m site --user-site)
 <div class="md-source-date">
   <small>
     
-      最后更新: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">July 24, 2022</span>
+      最后更新: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">September 2, 2022</span>
     
   </small>
 </div>
