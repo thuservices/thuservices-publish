@@ -351,6 +351,33 @@
     Tsinghua-Secure
   </a>
   
+    <nav class="md-nav" aria-label="Tsinghua-Secure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#networkmanager" class="md-nav__link">
+    NetworkManager
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wpa_supplicant" class="md-nav__link">
+    wpa_supplicant
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iwd" class="md-nav__link">
+    iwd
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -757,6 +784,33 @@
     Tsinghua-Secure
   </a>
   
+    <nav class="md-nav" aria-label="Tsinghua-Secure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#networkmanager" class="md-nav__link">
+    NetworkManager
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wpa_supplicant" class="md-nav__link">
+    wpa_supplicant
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iwd" class="md-nav__link">
+    iwd
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -1094,7 +1148,46 @@ auth-thu online <span class="c1"># 保持机器在线</span>
 <p>尤其要注意的是，不能直接访问 auth4/auth6 来进行认证（参考问与答），需要通过跳转的方式来访问 auth4/auth6 以获取正确的 ac_id. 一般情况下可以访问 info/learn 来跳转，也可通过 3.3.3.3 和 [3:3:3::3] 来跳转。后者对于三层接入的用户来说是一个较为方便的访问 auth6 的方案。</p>
 <h3 id="tsinghua-secure">Tsinghua-Secure<a class="headerlink" href="#tsinghua-secure" title="Permanent link">&para;</a></h3>
 <p>如果是校内环境，首先连接 <code>Tsinghua-Secure无线网使用指南</code> 进入 <a href="https://usereg.tsinghua.edu.cn">usereg.tsinghua.edu.cn</a> , 登录后在 <code>自注册及修改口令处</code> 设置 Tsinghua-Secure 使用的密码，此密码不需要与 info 密码相同。</p>
+<h4 id="networkmanager">NetworkManager<a class="headerlink" href="#networkmanager" title="Permanent link">&para;</a></h4>
 <p>设置好后，可以使用 <code>NetworkManager</code> 连接该 Wifi，可以参考 its 的文档 <a href="https://its.tsinghua.edu.cn/info/1333/2318.htm">清华大学无线校园网 802.1x 认证登录客户端配置说明</a>（本站<a href="../file/tsinghua-secure-config.pdf">备份</a>）</p>
+<p>样例配置 <code>/etc/NetworkManager/system-connections/Tsinghua-Secure.nmconnection</code> 如下</p>
+<div class="highlight"><pre><span></span><code>[connection]
+id=Tsinghua-Secure
+uuid=44638cf4-782e-4aaa-9ab9-f7a7e68de54c
+type=wifi
+permissions=
+timestamp=1661836652
+
+[wifi]
+mac-address-blacklist=
+mode=infrastructure
+seen-bssids=30:7B:AC:09:BF:EB;30:7B:AC:09:DD:8B;30:7B:AC:09:EF:CB;30:7B:AC:0A:18:2B;30:7B:AC:40:7F:CC;30:7B:AC:40:80:AC;30:7B:AC:40:A0:8A;30:7B:AC:65:0D:2B;30:7B:AC:65:22:6B;30:7B:AC:67:A5:4A;30:7B:AC:67:ED:8A;30:7B:AC:67:F5:8A;30:7B:AC:67:FC:4A;30:7B:AC:67:FC:59;30:7B:AC:92:ED:0C;30:7B:AC:93:08:8A;30:7B:AC:93:0F:CC;30:7B:AC:93:1D:6C;30:7B:AC:93:1D:7A;30:7B:AC:93:2B:2C;30:7B:AC:93:32:2C;30:7B:AC:93:33:2C;30:7B:AC:98:C0:CA;30:7B:AC:98:C1:0C;30:7B:AC:98:C1:CA;30:7B:AC:98:C5:6A;30:7B:AC:98:C8:0A;70:D9:31:23:AF:D2;94:28:2E:3F:ED:CA;94:28:2E:40:0E:CA;A8:58:40:5A:66:B2;A8:58:40:5B:7A:D2;A8:58:40:D5:D1:12;A8:58:40:D5:D3:22;A8:58:40:D5:D3:32;A8:58:40:D6:03:F2;A8:58:40:D6:25:F2;A8:58:40:D6:3C:F2;A8:58:40:D6:3F:52;A8:58:40:D6:44:B2;A8:58:40:D6:45:72;A8:58:40:D6:97:12;A8:58:40:D7:14:D2;
+ssid=Tsinghua-Secure
+
+[wifi-security]
+key-mgmt=wpa-eap
+
+[802-1x]
+eap=peap;
+identity=&lt;username&gt;@tsinghua
+password=&lt;redacted&gt;
+phase2-auth=mschapv2
+
+[ipv4]
+dns-search=
+method=disabled
+
+[ipv6]
+addr-gen-mode=eui64
+dns-search=
+ignore-auto-dns=true
+method=auto
+token=::114:514:1919:810
+
+[proxy]
+</code></pre></div>
+<p>该样例配置仅启用了 IPv6 并获取特定后缀（请自行挑选后缀以免地址相撞），同时使用了 <code>@tsinghua</code> 的 <code>identity</code> 以保证不占用准出名额。</p>
+<h4 id="wpa_supplicant">wpa_supplicant<a class="headerlink" href="#wpa_supplicant" title="Permanent link">&para;</a></h4>
 <p>也可使用 <code>wpa_supplicant</code> 完成相应 wifi 连接。安装 <code>wpa_supplicant</code>，编辑 <code>/etc/wpa_supplicant/wpa_supplicant-nl80211-XXXX.conf</code>， 其中 <code>XXXX</code> 是本机网卡名称，输入以下配置</p>
 <div class="highlight"><pre><span></span><code>ctrl_interface=/var/run/wpa_supplicant
 update_config=1
@@ -1116,6 +1209,28 @@ network={
 </code></pre></div>
 <p>即可连接。</p>
 <p>注：本配置由<a href="http://hep.tsinghua.edu.cn/~orv">orv</a>贡献。</p>
+<h4 id="iwd">iwd<a class="headerlink" href="#iwd" title="Permanent link">&para;</a></h4>
+<p>由于 Tsinghua-Secure 的证书问题（dhparams 中 p 的长度仅为 1024，不符合 <a href="https://elixir.bootlin.com/linux/v6.0/source/crypto/dh.c#L52">Linux 内核的 1536 长度需求</a>），而 iwd 依赖于内核的密码学工具，默认使用 iwd 无法连接。</p>
+<p><a href="https://github.com/NickCao">NickCao</a> 为此提供了 <a href="https://github.com/NickCao/dhack">dhack 内核模块</a> 与 ell 工具补丁（如下）；前者通过劫持相应符号实现补丁，后者在 nix 构建软件包时直接替换源码中的参数。用户可以依此类推自行构建内核与工具。</p>
+<div class="highlight"><pre><span></span><code>iwd<span class="o">.</span>override <span class="p">{</span>
+  <span class="ss">ell =</span> ell<span class="o">.</span>overrideAttrs <span class="p">(</span>_<span class="p">:</span> <span class="p">{</span>
+    <span class="ss">postPatch =</span> <span class="s1">&#39;&#39;</span>
+<span class="s1">      substituteInPlace ell/tls-suites.c \</span>
+<span class="s1">        --replace </span><span class="err">&#39;</span><span class="s1">params-&gt;prime_len &lt; 192</span><span class="err">&#39;</span><span class="s1"> </span><span class="err">&#39;</span><span class="s1">params-&gt;prime_len &lt; 128</span><span class="err">&#39;</span><span class="s1"></span>
+<span class="s1">    &#39;&#39;</span><span class="p">;</span>
+  <span class="p">});</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>另外配置如下</p>
+<div class="highlight"><pre><span></span><code>[Security]
+EAP-Method=PEAP
+EAP-Identity=&lt;username&gt;
+EAP-PEAP-Phase2-Method=MSCHAPV2
+EAP-PEAP-Phase2-Identity=&lt;username&gt;
+EAP-PEAP-Phase2-Password=&lt;passwd&gt;
+[Settings]
+AutoConnect=true
+</code></pre></div>
 <h3 id="tsinghua-secure_1">Tsinghua-Secure 仅校内登录方式<a class="headerlink" href="#tsinghua-secure_1" title="Permanent link">&para;</a></h3>
 <p>我们注意到，连接 Tsinghua-Secure 后获取的 IPv4 地址会自动进入准出表中，有可能在未预期的情况下挤占掉线已有的准出设备。</p>
 <p>经过测试发现，如果在登录时使用的 username 为「username@tsinghua」（例如lh14@tsinghua），那么其登录行为与「仅校内登录」一样。这种情况下v4只有准入，v6有准入与准出。</p>
