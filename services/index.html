@@ -12,7 +12,7 @@
       
       
       <link rel="shortcut icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-6.2.8">
+      <meta name="generator" content="mkdocs-1.4.1, mkdocs-material-6.2.8">
     
     
       
@@ -1139,7 +1139,8 @@ ip r a <span class="m">59</span>.66.130.1 dev eth0
 </code></pre></div>
 参数需要根据实际情况确认，第一个为 /64 的前缀，可以参考获得的地址或者参考 RA 来书写，第二个为网关的 LL 地址，与默认路由中显示的地址相同，第三个为无线网卡。</p>
 <h3 id="_10">低端口阻断<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h3>
-<p>按照前面的「使用简介」文档，IPv4 对 0到1024，8000到8100，3389 以及 9100 端口进行阻断。</p>
+<p>按照前面的「使用简介」文档，IPv4 对 0 到 1024，8000 到 8100，3389 以及 9100 端口进行阻断。另外由于众所周知的原因，1080、4781、7890 端口也被阻断。</p>
+<p>2022 年秋季开始，IPv6 对低端口部分进行阻断。</p>
 <h3 id="ip">动态 IP<a class="headerlink" href="#ip" title="Permanent link">&para;</a></h3>
 <p>对于动态IP，我们可以使用 DDNS 解决，各大提供商，例如 DNSPod，dns.he.net，cloudflare 都提供了该服务。</p>
 <p>以 dns.he.net 为例，先增加一个 A/AAAA 记录，并选择使用 DDNS，创建好后创建更新 Token，记为 T。我们书写以下脚本</p>
@@ -1286,7 +1287,7 @@ cp -r python/seafile $(python3 -m site --user-site)
 <div class="md-source-date">
   <small>
     
-      最后更新: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">October 1, 2022</span>
+      最后更新: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">October 21, 2022</span>
     
   </small>
 </div>
@@ -1297,7 +1298,7 @@ cp -r python/seafile $(python3 -m site --user-site)
 
 <div class="md-source-date">
     <small>
-        作者: <span class='git-page-authors git-authors'><a href='mailto:i@zenithal.me'>ZenithalHourlyRate</a></span>
+        作者: <span class='git-page-authors git-authors'><a href='mailto:i@zenithal.me'>Zenithal</a></span>
     </small>
 </div>
 
