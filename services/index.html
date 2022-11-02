@@ -12,7 +12,7 @@
       
       
       <link rel="shortcut icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.1, mkdocs-material-6.2.8">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-6.2.8">
     
     
       
@@ -1145,7 +1145,7 @@ auth-thu online <span class="c1"># 保持机器在线</span>
 <div class="highlight"><pre><span></span><code>ssh -D &lt;port&gt; host
 </code></pre></div>
 <p>这样在本地会搭建一个以 <code>&lt;port&gt;</code> 为端口的 socks5 代理，如果在浏览器中使用该代理，即可与往常一样实现网页认证。</p>
-<p>尤其要注意的是，不能直接访问 auth4/auth6 来进行认证（参考问与答），需要通过跳转的方式来访问 auth4/auth6 以获取正确的 ac_id. 一般情况下可以访问 info/learn 来跳转，也可通过 3.3.3.3 和 [3:3:3::3] 来跳转。后者对于三层接入的用户来说是一个较为方便的访问 auth6 的方案。</p>
+<p>尤其要注意的是，不能直接访问 auth4/auth6 来进行认证（参考问与答），需要通过跳转的方式来访问 auth4/auth6 以获取正确的 ac_id. 一般情况下可以访问 info/learn/login 来跳转，也可通过 3.3.3.3 和 [3:3:3::3] 来跳转。后者对于三层接入的用户来说是一个较为方便的访问 auth6 的方案。</p>
 <h3 id="tsinghua-secure">Tsinghua-Secure<a class="headerlink" href="#tsinghua-secure" title="Permanent link">&para;</a></h3>
 <p>如果是校内环境，首先连接 <code>Tsinghua-Secure无线网使用指南</code> 进入 <a href="https://usereg.tsinghua.edu.cn">usereg.tsinghua.edu.cn</a> , 登录后在 <code>自注册及修改口令处</code> 设置 Tsinghua-Secure 使用的密码，此密码不需要与 info 密码相同。</p>
 <h4 id="networkmanager">NetworkManager<a class="headerlink" href="#networkmanager" title="Permanent link">&para;</a></h4>
@@ -1405,7 +1405,7 @@ cp -r python/seafile $(python3 -m site --user-site)
 <div class="md-source-date">
   <small>
     
-      最后更新: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">October 27, 2022</span>
+      最后更新: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">November 2, 2022</span>
     
   </small>
 </div>
