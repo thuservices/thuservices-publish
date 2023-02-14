@@ -1086,10 +1086,10 @@
 <h2 id="sslvpn">SSLVPN<a class="headerlink" href="#sslvpn" title="Permanent link">&para;</a></h2>
 <p>在 Linux 机器上没有 PULSE SECURE 客户端，除了可以使用 WEB VPN 外，也可使用 <code>openconnect</code> 来做到连接清华VPN。</p>
 <p>若是 Debian 系，包括 Ubuntu，可以使用</p>
-<div class="highlight"><pre><span></span><code>$ apt-get install openconnect
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>openconnect
 </code></pre></div>
 <p>若是 Arch Linux，可以使用</p>
-<div class="highlight"><pre><span></span><code>$ pacman -S openconnect
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>pacman<span class="w"> </span>-S<span class="w"> </span>openconnect
 </code></pre></div>
 <p>安装此软件。其余发行版请自行查阅相应源。</p>
 <p>安装完毕后，使用</p>
@@ -1099,7 +1099,7 @@
 </blockquote>
 <p>指定协议为 Juniper 的情况下，客户端不会被分配 IPv6 地址，如果改成 Pulse Connect Secure 则可以获取到一个 IPv6 地址。同时还需要指定 UserAgent 才能正确地获取 IPv6 路由，否则会尝试将所有 IPv6 流量路由到 VPN。</p>
 <p>用如下的方式可以正确获取 IPv6 地址和路由（具体是 2402:f000::/32）：</p>
-<div class="highlight"><pre><span></span><code>openconnect --protocol<span class="o">=</span>pulse https://sslvpn.tsinghua.edu.cn --useragent Pulse-Secure/9.1.11.6725
+<div class="highlight"><pre><span></span><code>openconnect<span class="w"> </span>--protocol<span class="o">=</span>pulse<span class="w"> </span>https://sslvpn.tsinghua.edu.cn<span class="w"> </span>--useragent<span class="w"> </span>Pulse-Secure/9.1.11.6725
 </code></pre></div>
 <p>输入帐号和密码后即连接上校园网，可以访问校内服务（INFO/USEREG）。</p>
 <p>值得注意的是，与清华无关的流量依旧按照原有路由发出，此行为与 Windows 下不同。（此项需求证）</p>
@@ -1119,13 +1119,13 @@
 <p>以下参考 <a href="https://github.com/z4yx/GoAuthing">GoAuthing</a></p>
 <h4 id="_4">命令行认证<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h4>
 <p>该软件实现了七个主要功能，分别是</p>
-<div class="highlight"><pre><span></span><code>auth-thu auth <span class="c1"># v4准入</span>
-auth-thu deauth <span class="c1"># 解除v4准入</span>
-auth-thu auth -6 <span class="c1"># v6准入</span>
-auth-thu deauth -6 <span class="c1"># 解除v6准入</span>
-auth-thu login <span class="c1"># v4准出</span>
-auth-thu <span class="nb">logout</span> <span class="c1"># 解除v4准出</span>
-auth-thu online <span class="c1"># 保持机器在线</span>
+<div class="highlight"><pre><span></span><code>auth-thu<span class="w"> </span>auth<span class="w"> </span><span class="c1"># v4准入</span>
+auth-thu<span class="w"> </span>deauth<span class="w"> </span><span class="c1"># 解除v4准入</span>
+auth-thu<span class="w"> </span>auth<span class="w"> </span>-6<span class="w"> </span><span class="c1"># v6准入</span>
+auth-thu<span class="w"> </span>deauth<span class="w"> </span>-6<span class="w"> </span><span class="c1"># 解除v6准入</span>
+auth-thu<span class="w"> </span>login<span class="w"> </span><span class="c1"># v4准出</span>
+auth-thu<span class="w"> </span><span class="nb">logout</span><span class="w"> </span><span class="c1"># 解除v4准出</span>
+auth-thu<span class="w"> </span>online<span class="w"> </span><span class="c1"># 保持机器在线</span>
 </code></pre></div>
 <p>普通用户将其放在家目录下，作为命令行工具使用，即可满足大部分认证需求。</p>
 <p>已知问题：在用户通过<code>auth-thu auth -C</code>（仅准入）后调用<code>auth-thu login</code>（仅准出），准出会失败。</p>
@@ -1133,7 +1133,7 @@ auth-thu online <span class="c1"># 保持机器在线</span>
 <p>对于系统管理员来说，可能存在服务器实现自动认证的需求。</p>
 <p>下载好文件以后请合理放置在相应目录（如 /usr/local/bin）下，同时将配置文件放在合理目录下，即可使用</p>
 <p>要做到自动 <strong>准出</strong>，需将其中附带的 <code>goauthing.service</code> 或 <code>goauthing@.service</code> 放置 <code>/etc/systemd/system/</code> 文件夹下 ，并调整相应内容以符合程序文件以及配置文件的路径，使用</p>
-<div class="highlight"><pre><span></span><code>$ systemctl <span class="nb">enable</span> goauthing.service
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>goauthing.service
 </code></pre></div>
 <p>启动相应服务，即可达到自动认证的目的。如果要实现账户信息储存在用户家目录中而不是 <code>/etc</code> 中，可以参考 <code>goauthing@.service</code>。</p>
 <p>如果要实现 <code>v6</code> 的自动准入，可参考 <code>goauthing6.service</code> 和 <code>goauthing6@.service</code>。如果只要 v4 的自动准入，需要将 <code>goauthing.service</code> 中的 <code>auth</code> 变为 <code>auth -C</code>，且删除 <code>login</code> 一行。</p>
@@ -1222,7 +1222,7 @@ network={
   <span class="ss">ell =</span> ell<span class="o">.</span>overrideAttrs <span class="p">(</span>_<span class="p">:</span> <span class="p">{</span>
     <span class="ss">postPatch =</span> <span class="s1">&#39;&#39;</span>
 <span class="s1">      substituteInPlace ell/tls-suites.c \</span>
-<span class="s1">        --replace </span><span class="err">&#39;</span><span class="s1">params-&gt;prime_len &lt; 192</span><span class="err">&#39;</span><span class="s1"> </span><span class="err">&#39;</span><span class="s1">params-&gt;prime_len &lt; 128</span><span class="err">&#39;</span><span class="s1"></span>
+<span class="s1">        --replace &#39;params-&gt;prime_len &lt; 192&#39; &#39;params-&gt;prime_len &lt; 128&#39;</span>
 <span class="s1">    &#39;&#39;</span><span class="p">;</span>
   <span class="p">});</span>
 <span class="p">}</span>
@@ -1248,15 +1248,15 @@ AutoConnect=true
 <h4 id="ipv4">IPv4<a class="headerlink" href="#ipv4" title="Permanent link">&para;</a></h4>
 <p>当我们分配到例如 59.66.130.xx/24 的 IP 时，如果我们想连接 59.66.130.yy/24，我们可能会发现无法连接。注意到这两个在一个 /24 中，即一个二层中，这种情况下两台机器会通过ARP发现对方，但在学校的一些机制下，ARP不能工作。</p>
 <p>这种情况下，需要在两台机器上增加以下路由。</p>
-<div class="highlight"><pre><span></span><code>ip r a <span class="m">59</span>.66.130.0/24 via <span class="m">59</span>.66.130.1
-ip r a <span class="m">59</span>.66.130.1 dev eth0
+<div class="highlight"><pre><span></span><code>ip<span class="w"> </span>r<span class="w"> </span>a<span class="w"> </span><span class="m">59</span>.66.130.0/24<span class="w"> </span>via<span class="w"> </span><span class="m">59</span>.66.130.1
+ip<span class="w"> </span>r<span class="w"> </span>a<span class="w"> </span><span class="m">59</span>.66.130.1<span class="w"> </span>dev<span class="w"> </span>eth0
 </code></pre></div>
 <p>需要根据实际情况修改相应参数。</p>
 <h4 id="ipv6">IPv6<a class="headerlink" href="#ipv6" title="Permanent link">&para;</a></h4>
 <p>紫荆的 IPv6 不存在该问题，由于其地址是 /128 的。</p>
 <p>当我们在一个 Tsinghua-Secure 下时，我们会通过 SLAAC 分配地址，即大家的地址都在一个同一个 /64 下，当互相之间想通信时，需要通过 NDP 进行发现。由于校园网的一些机制，NDP可能不会成功。</p>
 <p>这种情况下，需要在两台机器上增加以下路由</p>
-<p><div class="highlight"><pre><span></span><code>ip r a <span class="m">2402</span>:f000:2:b801::/64 via fe80::xxxx dev wlan0
+<p><div class="highlight"><pre><span></span><code>ip<span class="w"> </span>r<span class="w"> </span>a<span class="w"> </span><span class="m">2402</span>:f000:2:b801::/64<span class="w"> </span>via<span class="w"> </span>fe80::xxxx<span class="w"> </span>dev<span class="w"> </span>wlan0
 </code></pre></div>
 参数需要根据实际情况确认，第一个为 /64 的前缀，可以参考获得的地址或者参考 RA 来书写，第二个为网关的 LL 地址，与默认路由中显示的地址相同，第三个为无线网卡。</p>
 <h3 id="_10">低端口阻断<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h3>
@@ -1275,13 +1275,13 @@ curl -4 &quot;https://domain.example.com:T@dyn.dns.he.net/nic/update?hostname=do
 <p>（吐槽：token 这套工具，几乎不在标准里面被提及，文档也少（IPv6 的文档本来就少），还是很小众的东西；毕竟谁需要静态后缀呢，同一个子网下的机器，与其使用静态后缀进行通信（没错，没有只有后缀的路由项，所以到网内另一台机器需要时刻加上前缀），不如配一个静态的私有地址）</p>
 <p>往常我们分配到的 IPv6 较复杂，这是因为使用了 EUI64 或者隐私扩展，对于EUI64，可以在地址中发现 <code>ff:fe</code> 的字段。</p>
 <p>我们可以通过 iproute2 或传统套件配置静态后缀，后者的使用方法请谷歌，前者的方法在此给出。</p>
-<div class="highlight"><pre><span></span><code>ip token <span class="nb">set</span> ::114:514:1919:810/64 dev wlan0
+<div class="highlight"><pre><span></span><code>ip<span class="w"> </span>token<span class="w"> </span><span class="nb">set</span><span class="w"> </span>::114:514:1919:810/64<span class="w"> </span>dev<span class="w"> </span>wlan0
 </code></pre></div>
 <p>在运行此命令 <strong>之前</strong>，我们需要注意，我们需要将网卡的 <code>forwarding</code> 关闭（ <strong>在配置时</strong> ，配置后可以打开转发），并打开 <code>accept_ra</code> 与 <code>autoconf</code>，并将其他 dhcp 客户端的 v6 功能关闭。</p>
 <p>（吐槽：dhcpcd 虽然说是个 dhcp 客户端，它把 SLAAC 的事情也接管了，就很恼。按照传统只需要开了 <code>accept_ra</code> 与 <code>autoconf</code>，Linux 内核就会自动配置v6地址。如果 <code>forwarding=1</code>时，我们需要使 <code>accept_ra=2</code>）</p>
-<div class="highlight"><pre><span></span><code>sysctl net/ipv6/conf/wlan0/accept_ra<span class="o">=</span><span class="m">1</span>
-sysctl net/ipv6/conf/wlan0/autoconf<span class="o">=</span><span class="m">1</span>
-sysctl net/ipv6/conf/wlan0/forwarding<span class="o">=</span><span class="m">0</span>
+<div class="highlight"><pre><span></span><code>sysctl<span class="w"> </span>net/ipv6/conf/wlan0/accept_ra<span class="o">=</span><span class="m">1</span>
+sysctl<span class="w"> </span>net/ipv6/conf/wlan0/autoconf<span class="o">=</span><span class="m">1</span>
+sysctl<span class="w"> </span>net/ipv6/conf/wlan0/forwarding<span class="o">=</span><span class="m">0</span>
 </code></pre></div>
 <p>以上命令的一些参数请按需替换。我们可以将以上命令放在启动脚本中，使得自动配置 token。</p>
 <h4 id="ipv4ipv6">尝试获取某一特定IPv4、IPv6地址<a class="headerlink" href="#ipv4ipv6" title="Permanent link">&para;</a></h4>
@@ -1334,7 +1334,7 @@ Apr 02 07:00:34 Zenith dhcpcd[497]: enp3s0: adding address 2402:f000:4:3:888:192
 <h2 id="_13">清华云盘<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h2>
 <p>建议使用 <a href="https://seafile.com/download">seafile.com/download</a> 中的 Linux 客户端，而不是 Terminal 客户端，因为 Terminal 客户端需要独立密码，此密码不同于 INFO 密码，不能获得，故不能通过 Terminal 客户端登录。</p>
 <p>由于手动安装软件的方式是不为推崇的，请使用包管理器获取相应软件。对 Arch Linux 用户，Linux 客户端就是</p>
-<div class="highlight"><pre><span></span><code>pacman -S seafile-client
+<div class="highlight"><pre><span></span><code>pacman<span class="w"> </span>-S<span class="w"> </span>seafile-client
 </code></pre></div>
 <p>而非 <code>pacman -S seafile</code>，此包为 Terminal 客户端。其余发行版请自行找到对应包。</p>
 <h3 id="terminal">使用 Terminal 客户端<a class="headerlink" href="#terminal" title="Permanent link">&para;</a></h3>
@@ -1411,7 +1411,7 @@ cp -r python/seafile $(python3 -m site --user-site)
 <div class="md-source-date">
   <small>
     
-      最后更新: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">December 25, 2022</span>
+      最后更新: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">February 14, 2023</span>
     
   </small>
 </div>
@@ -1422,7 +1422,7 @@ cp -r python/seafile $(python3 -m site --user-site)
 
 <div class="md-source-date">
     <small>
-        作者: <span class='git-page-authors git-authors'><a href='mailto:i@zenithal.me'>ZenithalHourlyRate</a></span>
+        作者: <span class='git-page-authors git-authors'><a href='mailto:i@zenithal.me'>Zenithal</a></span>
     </small>
 </div>
 
