@@ -1193,6 +1193,17 @@ token=::114:514:1919:810
 [proxy]
 </code></pre></div>
 <p>该样例配置仅启用了 IPv6 并获取特定后缀（请自行挑选后缀以免地址相撞），同时使用了 <code>@tsinghua</code> 的 <code>identity</code> 以保证不占用准出名额。</p>
+<p>特别要注意的是，如果你同时符合下面三个条件：</p>
+<ol>
+<li><code>NetworkManager</code> 使用了 <code>wpa_supplicant</code> 后端 </li>
+<li>使用了 3.0.0 及以上版本的 <code>openssl</code></li>
+<li>使用的发行版没有给 <code>wpa_supplicant</code> 打上 <a href="https://launchpad.net/ubuntu/+source/wpa/2:2.10-6ubuntu2">修复 tls 1.0/1.1 连接的 patch</a> （目前确认 Ubuntu 有 patch，NixOS 没有 patch）</li>
+</ol>
+<p>那么你的 <code>NetworkManager</code> 可能由于 tls 1.0 连接被禁用而连不上 <code>Tsinghua-Secure</code>，此时有以下两种解决方法，任意一种都能解决：</p>
+<ol>
+<li>升级 NetworkManager 到 <code>1.41.5-dev</code> 及以上，准确的说是确保 <a href="https://gitlab.freedesktop.org/NetworkManager/NetworkManager/-/commit/98dd4180ec163af63fe1e0fda00158ac7f0047df">这个 commit</a> 已经被包含，并且在 <code>nmcli</code> 中设置 <code>phase1-auth-flags</code>。</li>
+<li>给自己的 <code>wpa_supplicant</code> 打上前面提到的 patch。</li>
+</ol>
 <h4 id="wpa_supplicant">wpa_supplicant<a class="headerlink" href="#wpa_supplicant" title="Permanent link">&para;</a></h4>
 <p>也可使用 <code>wpa_supplicant</code> 完成相应 wifi 连接。安装 <code>wpa_supplicant</code>，编辑 <code>/etc/wpa_supplicant/wpa_supplicant-nl80211-XXXX.conf</code>， 其中 <code>XXXX</code> 是本机网卡名称，输入以下配置</p>
 <div class="highlight"><pre><span></span><code>ctrl_interface=/var/run/wpa_supplicant
@@ -1206,6 +1217,8 @@ network={
         eap=PEAP
         identity=&quot;username&quot;
         password=&quot;password&quot;
+        # 使用 3.0.0 及以上版本的 openssl，同时发行版没有打上相应 patch 的话（参见上一节），tls 1.0/1.1 会被默认禁用，无法连接 Tsinghua-Secure。下面这行可以解除禁用
+        phase1=&quot;tls_disable_tlsv1_0=0&quot;
         phase2=&quot;auth=MSCHAPV2&quot;
         priority=9
 }     
@@ -1411,7 +1424,7 @@ cp -r python/seafile $(python3 -m site --user-site)
 <div class="md-source-date">
   <small>
     
-      最后更新: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">March 23, 2023</span>
+      最后更新: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">March 30, 2023</span>
     
   </small>
 </div>
@@ -1422,7 +1435,7 @@ cp -r python/seafile $(python3 -m site --user-site)
 
 <div class="md-source-date">
     <small>
-        作者: <span class='git-page-authors git-authors'><a href='mailto:i@zenithal.me'>Hongren (Zenithal) Zheng</a></span>
+        作者: <span class='git-page-authors git-authors'><a href='mailto:42770726+wrvsrx@users.noreply.github.com'>wrvsrx</a></span>
     </small>
 </div>
 
