@@ -1201,7 +1201,7 @@ token=::114:514:1919:810
 </ol>
 <p>那么你的 <code>NetworkManager</code> 可能由于 tls 1.0 连接被禁用而连不上 <code>Tsinghua-Secure</code>，此时有以下两种解决方法，任意一种都能解决：</p>
 <ol>
-<li>升级 NetworkManager 到 <code>1.41.5-dev</code> 及以上，准确的说是确保 <a href="https://gitlab.freedesktop.org/NetworkManager/NetworkManager/-/commit/98dd4180ec163af63fe1e0fda00158ac7f0047df">这个 commit</a> 已经被包含，并且在 <code>nmcli</code> 中设置 <code>phase1-auth-flags</code>。</li>
+<li>升级 NetworkManager 到 <code>1.41.5-dev</code> 及以上，准确的说是确保 <a href="https://gitlab.freedesktop.org/NetworkManager/NetworkManager/-/commit/98dd4180ec163af63fe1e0fda00158ac7f0047df">这个 commit</a> 已经被包含。在上述配置文件的 <code>[802-1x]</code> 一节中加入一行 <code>phase1-auth-flags=32</code>（<code>NetworkManager</code> 中 <code>tls-1-0-enable</code> 这一选项对应 <code>0x20</code>，换算成十进制是 <code>32</code>，这一换算关系目前没有在文档里记录，所以不保证 32 这个数字始终有效。更能保证有效的方法是手动用 <code>nmcli</code> 设置 <code>Tsinghua-Secure</code> 中设置 <code>802-1x.phase1-auth-flags</code> 为 <code>tls-1-0-enable</code>）。</li>
 <li>给自己的 <code>wpa_supplicant</code> 打上前面提到的 patch。</li>
 </ol>
 <h4 id="wpa_supplicant">wpa_supplicant<a class="headerlink" href="#wpa_supplicant" title="Permanent link">&para;</a></h4>
@@ -1424,7 +1424,7 @@ cp -r python/seafile $(python3 -m site --user-site)
 <div class="md-source-date">
   <small>
     
-      最后更新: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">April 3, 2023</span>
+      最后更新: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">April 5, 2023</span>
     
   </small>
 </div>
@@ -1435,7 +1435,7 @@ cp -r python/seafile $(python3 -m site --user-site)
 
 <div class="md-source-date">
     <small>
-        作者: <span class='git-page-authors git-authors'><a href='mailto:i@zenithal.me'>Zenithal</a></span>
+        作者: <span class='git-page-authors git-authors'><a href='mailto:42770726+wrvsrx@users.noreply.github.com'>wrvsrx</a></span>
     </small>
 </div>
 
