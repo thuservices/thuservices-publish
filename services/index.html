@@ -12,7 +12,7 @@
       
       
       <link rel="shortcut icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-6.2.8">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-6.2.8">
     
     
       
@@ -503,6 +503,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#dns" class="md-nav__link">
+    DNS 拦截
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -936,6 +943,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#dns" class="md-nav__link">
+    DNS 拦截
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1084,6 +1098,7 @@
 </code></pre></div>
 <p>按照校园网建议，在配置 DNS 和 NTP 时，至少要使用校园网提供的服务。</p>
 <p>目前，校园网内只能使用校园网提供的 DNS，其余 DNS 不保证工作。</p>
+<p>对于更多校园网 DNS 特性及可能可用的公共 DNS 服务，参考 <a href="#dns-拦截">DNS 拦截</a></p>
 <h2 id="sslvpn">SSLVPN<a class="headerlink" href="#sslvpn" title="Permanent link">&para;</a></h2>
 <p>在 Linux 机器上没有 PULSE SECURE 客户端，除了可以使用 WEB VPN 外，也可使用 <code>openconnect</code> 来做到连接清华VPN。</p>
 <p>若是 Debian 系，包括 Ubuntu，可以使用</p>
@@ -1345,6 +1360,248 @@ Apr 02 07:00:34 Zenith dhcpcd[497]: enp3s0: adding address 2402:f000:4:3:888:192
 <h3 id="ping-ssh">未准入时其他机器能 ping 通，但不能 ssh<a class="headerlink" href="#ping-ssh" title="Permanent link">&para;</a></h3>
 <p>不能 ssh 是预策略（参考本章校园网基础知识一节中的《清华大学校园网有线局域网用户准入系统使用说明（问与答）》）决定的</p>
 <p>能 ping 通也是预策略决定的，不过这一点没有文档；即，未准入时放行 ICMP reply 包。</p>
+<h3 id="dns">DNS 拦截<a class="headerlink" href="#dns" title="Permanent link">&para;</a></h3>
+<p>校园网（教育网）可能会拦截到一些常见 DNS 服务器的 ICMP 和 DNS 请求，表现为 <code>ping</code> 或 <code>dig</code> 相应地址时延迟异常低 (&lt;1ms)，<code>traceroute</code> 显示包经过少数几跳后在某些属于校园网（教育网）的 IP 地址（118.229.x.y，可能为路由设备）处消失，未进入其他运营商网络。</p>
+<p>笔者在宿舍区 (59.66.x.y 网段) 测试了部分公开 DNS 服务器的响应情况，供参考，表中 ping 延迟 &lt;1 的结果提示服务器可能被劫持。注意此类策略可能随时间动态调整，此测试结果可能无法及时更新。从测试结果中大致可总结出以下规律：</p>
+<ol>
+<li>知名 DNS 提供商的主要 IPv4 地址易受拦截，备用 IPv4 地址 (114, Cloudflare) 、较不规律的 IPv4 地址 (360, Quad9 备用, OpenDNS) 和 IPv6 地址未被拦截，可能与用户请求数量有关；</li>
+<li>海外 DNS 提供商的 IPv6 地址响应延迟低于响应的 IPv4 地址，大陆地区的 DNS 部分情况相反，IPv6 地址响应速度整体偏慢。校园网 DNS 和 TUNA 响应速度一骑绝尘。</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>DNS 厂商</th>
+<th>IP 地址</th>
+<th>ping 延迟 (ms)</th>
+<th>dig 延迟 (ms)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>校园网</td>
+<td>166.111.8.28</td>
+<td>&lt;1</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>166.111.8.29</td>
+<td>&lt;1</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>2402:f000:1:801::8:28</td>
+<td>&lt;1</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>2402:f000:1:801::8:29</td>
+<td>&lt;1</td>
+<td></td>
+</tr>
+<tr>
+<td>114</td>
+<td>114.114.114.114</td>
+<td>&lt;1</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>114.114.115.115</td>
+<td>9</td>
+<td>7</td>
+</tr>
+<tr>
+<td>360</td>
+<td>101.226.4.6</td>
+<td>28</td>
+<td>31</td>
+</tr>
+<tr>
+<td></td>
+<td>218.30.118.6</td>
+<td>34</td>
+<td>35</td>
+</tr>
+<tr>
+<td></td>
+<td>140.207.198.6</td>
+<td>25</td>
+<td>27</td>
+</tr>
+<tr>
+<td></td>
+<td>123.125.81.6</td>
+<td>3</td>
+<td>3</td>
+</tr>
+<tr>
+<td>阿里</td>
+<td>223.5.5.5</td>
+<td>&lt;1</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>223.6.6.6</td>
+<td>&lt;1</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>2400:3200::1</td>
+<td>3</td>
+<td>3</td>
+</tr>
+<tr>
+<td></td>
+<td>2400:3200:baba::1</td>
+<td>3</td>
+<td>3</td>
+</tr>
+<tr>
+<td>百度</td>
+<td>180.76.76.76</td>
+<td>&lt;1</td>
+<td></td>
+</tr>
+<tr>
+<td>腾讯 DNSPod</td>
+<td>119.29.29.29</td>
+<td>&lt;1</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>2402:4e00::</td>
+<td>54</td>
+<td>51</td>
+</tr>
+<tr>
+<td></td>
+<td>2402:4e00:1::</td>
+<td>56</td>
+<td>51</td>
+</tr>
+<tr>
+<td>天地互连</td>
+<td>240c::6666</td>
+<td>40</td>
+<td>159</td>
+</tr>
+<tr>
+<td></td>
+<td>240c::6644</td>
+<td>36</td>
+<td>55</td>
+</tr>
+<tr>
+<td>TUNA DNS666</td>
+<td>101.6.6.6</td>
+<td>不响应</td>
+<td>3</td>
+</tr>
+<tr>
+<td></td>
+<td>2001:da8::666</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>谷歌</td>
+<td>8.8.8.8</td>
+<td>&lt;1</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>8.8.4.4</td>
+<td>&lt;1</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>2001:4860:4860::8888</td>
+<td>36</td>
+<td>40</td>
+</tr>
+<tr>
+<td></td>
+<td>2001:4860:4860::8844</td>
+<td>36</td>
+<td>39</td>
+</tr>
+<tr>
+<td>Cloudflare</td>
+<td>1.1.1.1</td>
+<td>&lt;1</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>1.0.0.1</td>
+<td>170</td>
+<td>171</td>
+</tr>
+<tr>
+<td></td>
+<td>2606:4700:4700::1111</td>
+<td>38</td>
+<td>51</td>
+</tr>
+<tr>
+<td></td>
+<td>2606:4700:4700::1001</td>
+<td>38</td>
+<td>47</td>
+</tr>
+<tr>
+<td>Quad9</td>
+<td>9.9.9.9</td>
+<td>&lt;1</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>149.112.112.112</td>
+<td>170</td>
+<td>167</td>
+</tr>
+<tr>
+<td></td>
+<td>2620:fe::9</td>
+<td>37</td>
+<td>35</td>
+</tr>
+<tr>
+<td></td>
+<td>2620:fe::fe</td>
+<td>38</td>
+<td>39</td>
+</tr>
+<tr>
+<td>OpenDNS</td>
+<td>208.67.222.222</td>
+<td>170</td>
+<td>183</td>
+</tr>
+<tr>
+<td></td>
+<td>208.67.220.220</td>
+<td>170</td>
+<td>179</td>
+</tr>
+</tbody>
+</table>
+<p>注:</p>
+<ol>
+<li><code>dig</code> 使用笔者托管在 Cloudflare 上的某个域名测试，多次测量取较小值；</li>
+<li>360 “安全” DNS 未收录笔者的域名，返回了空的 A 和 AAAA 记录查询结果；</li>
+<li>部分 <code>dig</code> 测试延迟略低于 <code>ping</code> RTT，可能是由于二者计时方式不同或网络波动所致。</li>
+</ol>
+<p>本测试受 <a href="https://www.usenix.org/conference/usenixsecurity18/presentation/liu-baojun">Who Is Answering My Queries: Understanding and Characterizing Interception of the DNS Resolution Path</a> 启发，该论文对 DNS 拦截现象进行了更深入全面的研究。</p>
 <h2 id="_13">清华云盘<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h2>
 <p>建议使用 <a href="https://seafile.com/download">seafile.com/download</a> 中的 Linux 客户端，而不是 Terminal 客户端，因为 Terminal 客户端需要独立密码，此密码不同于 INFO 密码，不能获得，故不能通过 Terminal 客户端登录。</p>
 <p>由于手动安装软件的方式是不为推崇的，请使用包管理器获取相应软件。对 Arch Linux 用户，Linux 客户端就是</p>
@@ -1425,7 +1682,7 @@ cp -r python/seafile $(python3 -m site --user-site)
 <div class="md-source-date">
   <small>
     
-      最后更新: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">June 20, 2023</span>
+      最后更新: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">October 1, 2023</span>
     
   </small>
 </div>
@@ -1436,7 +1693,7 @@ cp -r python/seafile $(python3 -m site --user-site)
 
 <div class="md-source-date">
     <small>
-        作者: <span class='git-page-authors git-authors'><a href='mailto:i@zenithal.me'>Hongren (Zenithal) Zheng</a></span>
+        作者: <span class='git-page-authors git-authors'><a href='mailto:i@zenithal.me'>Hongren Zheng</a></span>
     </small>
 </div>
 
