@@ -1248,11 +1248,11 @@ network={
 <p>由于 Tsinghua-Secure 的证书问题（dhparams 中 p 的长度仅为 1024，不符合 <a href="https://elixir.bootlin.com/linux/v6.0/source/crypto/dh.c#L52">Linux 内核的 1536 长度需求</a>），而 iwd 依赖于内核的密码学工具，默认使用 iwd 无法连接。</p>
 <p><a href="https://github.com/NickCao">NickCao</a> 为此提供了 <a href="https://github.com/NickCao/dhack">dhack 内核模块</a> 与 ell 工具补丁（如下）；前者通过劫持相应符号实现补丁，后者在 nix 构建软件包时直接替换源码中的参数。用户可以依此类推自行构建内核与工具。</p>
 <div class="highlight"><pre><span></span><code>iwd<span class="o">.</span>override <span class="p">{</span>
-  <span class="ss">ell =</span> ell<span class="o">.</span>overrideAttrs <span class="p">(</span>_<span class="p">:</span> <span class="p">{</span>
-    <span class="ss">postPatch =</span> <span class="s1">&#39;&#39;</span>
-<span class="s1">      substituteInPlace ell/tls-suites.c \</span>
-<span class="s1">        --replace &#39;params-&gt;prime_len &lt; 192&#39; &#39;params-&gt;prime_len &lt; 128&#39;</span>
-<span class="s1">    &#39;&#39;</span><span class="p">;</span>
+  <span class="ss">ell</span> <span class="o">=</span> ell<span class="o">.</span>overrideAttrs <span class="p">(</span>_<span class="p">:</span> <span class="p">{</span>
+    <span class="ss">postPatch</span> <span class="o">=</span> <span class="s s-Multiline">&#39;&#39;</span>
+<span class="s s-Multiline">      substituteInPlace ell/tls-suites.c \</span>
+<span class="s s-Multiline">        --replace &#39;params-&gt;prime_len &lt; 192&#39; &#39;params-&gt;prime_len &lt; 128&#39;</span>
+<span class="s s-Multiline">    &#39;&#39;</span><span class="p">;</span>
   <span class="p">});</span>
 <span class="p">}</span>
 </code></pre></div>
@@ -1682,7 +1682,7 @@ cp -r python/seafile $(python3 -m site --user-site)
 <div class="md-source-date">
   <small>
     
-      最后更新: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">October 1, 2023</span>
+      最后更新: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">February 8, 2024</span>
     
   </small>
 </div>
@@ -1693,7 +1693,7 @@ cp -r python/seafile $(python3 -m site --user-site)
 
 <div class="md-source-date">
     <small>
-        作者: <span class='git-page-authors git-authors'><a href='mailto:i@zenithal.me'>Hongren Zheng</a></span>
+        作者: <span class='git-page-authors git-authors'><a href='mailto:me@sharzy.in'>Sharzy</a></span>
     </small>
 </div>
 
