@@ -1184,7 +1184,7 @@
 百万课程时速度有如神助。当鼠标在在标红的时间上悬停时，会显示所有与其冲突的课程。</p>
 <p>需要注意的是，现在未对半学期课做完全支持，也就是说可能出现假的时间冲突；
 同时在开课信息以及选课查询界面无法工作，只在选课操作界面工作。</p>
-<p>本脚本在 aux/TsinghuaCourseConflictMarker.user.js 中，需要使用油猴安装。</p>
+<p>本脚本在 misc/TsinghuaCourseConflictMarker.user.js 中，需要使用油猴安装。</p>
 <p>或者可以通过访问<a href="https://greasyfork.org/en/scripts/408340-tsinghuacourseconflictmarker">这里</a>
 来一键获得脚本。</p>
 <p>现在已经增加 webvpn 支持。</p>
@@ -1214,7 +1214,7 @@
 <h3 id="-api">全校洗衣机状态 - API接口（文字版，已废弃）<a class="headerlink" href="#-api" title="Permanent link">&para;</a></h3>
 <p>还在为了抢洗衣机而努力吗，还在跑上跑下却发现一个洗衣机都没有而痛苦吗，这个服务
 帮你侦测洗衣机状态，足不出户而一键掌握全校洗衣机的动向！</p>
-<p>源码在 repo 的 aux 目录中。目前部署在 cf workers 上，地址为 <a href="https://washer.thu.services">https://washer.thu.services</a></p>
+<p>源码在 repo 的 misc 目录中。目前部署在 cf workers 上，地址为 <a href="https://washer.thu.services">https://washer.thu.services</a></p>
 <p>要实现搜索，我们需要加上参数，目前接受三种参数，「s」，「j」与「p」。「s」即为搜索的
 公寓楼，一般接受的字符串为「紫荆x号楼」或「南区x号楼」。举例来说</p>
 <div class="highlight"><pre><span></span><code>https://washer.thu.services/?s=紫荆1号楼
@@ -1245,7 +1245,7 @@
 <p>本脚本只会读取「INFO-全部成绩」界面中存在的成绩（已经录入系统但没发布的，只能
 通过 cksqs 或付费成绩单获取的，不在计算范围内），用新、旧算法将全部 GPA 与必限 GPA
 计算出来（直接输出 double），并弹出通知提醒。</p>
-<p>本脚本在 <code>aux/Tsinghua GPA Calculator.user.js</code> 中，需要使用油猴安装。</p>
+<p>本脚本在 <code>misc/Tsinghua GPA Calculator.user.js</code> 中，需要使用油猴安装。</p>
 <p>或者通过<a href="https://greasyfork.org/zh-CN/scripts/410960-tsinghua-gpa-calculator">这里</a>
 来获得。</p>
 <h2 id="gpa">清华大学GPA查询<a class="headerlink" href="#gpa" title="Permanent link">&para;</a></h2>
@@ -1292,12 +1292,12 @@
 <p>参考<a href="https://tuixue.online/zcimage/">此网站</a>，方便在校外时获取相关注册标志。</p>
 <h2 id="_16">寝室电费查询<a class="headerlink" href="#_16" title="Permanent link">&para;</a></h2>
 <p>有通过 headless Chrome 的<a href="https://github.com/WhymustIhaveaname/TsinghuaElectric">实现</a></p>
-<p>也有另一种实现，参考 aux 目录中的 <code>TsinghuaElectricityBillChecker.py</code>，用户需要修改一些内嵌的参数。</p>
-<p>也有另一种实现，参考 aux 目录中的 <code>TsinghuaBills.py</code>。</p>
+<p>也有另一种实现，参考 misc 目录中的 <code>TsinghuaElectricityBillChecker.py</code>，用户需要修改一些内嵌的参数。</p>
+<p>也有另一种实现，参考 misc 目录中的 <code>TsinghuaBills.py</code>。</p>
 <p>还有另一种基于 curl 的 shell 脚本<a href="https://gist.github.com/DictXiong/793e72896b1390531c72f2ab46e62b89">实现</a>。</p>
 <p>通过这些脚本可以将数据灌入 grafana 中，实现电费监控与报警。</p>
 <h2 id="_17">寝室水电费查询<a class="headerlink" href="#_17" title="Permanent link">&para;</a></h2>
-<p>参考 aux 目录中的 <code>TsinghuaBills.py</code>。</p>
+<p>参考 misc 目录中的 <code>TsinghuaBills.py</code>。</p>
 <p>注：该脚本可查询的是寝室水费余额（非校园卡小钱包！），主要适用于W楼和双清公寓。具体适用范围：双清公寓、紫荆学生公寓十四号楼、紫荆学生公寓十五号楼、紫荆学生公寓十六号楼、紫荆学生公寓十七号楼、十七号楼、十八号楼。</p>
 <p>该脚本可以将数据灌入 grafana 中，实现水电费监控与报警。</p>
 <h2 id="_18">清华上下课铃声<a class="headerlink" href="#_18" title="Permanent link">&para;</a></h2>
