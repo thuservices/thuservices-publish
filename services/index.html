@@ -12,7 +12,7 @@
       
       
       <link rel="shortcut icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-6.2.8">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-6.2.8">
     
     
       
@@ -476,6 +476,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#systemd-networkd-ipv4" class="md-nav__link">
+    systemd-networkd 有线连接时无法获取 ipv4 地址
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#rfc-dhcpv6" class="md-nav__link">
     不符合 RFC 的 DHCPv6
   </a>
@@ -923,6 +930,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#systemd-networkd-ipv4" class="md-nav__link">
+    systemd-networkd 有线连接时无法获取 ipv4 地址
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#rfc-dhcpv6" class="md-nav__link">
     不符合 RFC 的 DHCPv6
   </a>
@@ -1353,6 +1367,12 @@ Apr 02 07:00:34 Zenith dhcpcd[497]: enp3s0: adding address 2402:f000:4:3:888:192
 <p>有些院系网是三层接入的校园网在网内配置的是 SLAAC。</p>
 <p>一些机器（例如 Windows 的默认设置和一些 Linux 的默认设置）配置了隐私扩展后，在 SLAAC 环境下其 IPv6 地址会不断改变，由于学校的准入是对 IPv6 地址进行的，具体表现就是在用 auth6 准入 IPv6 一段时间后就失去了准入，需要重新登录 auth6。</p>
 <p>一种方法是关掉 IPv6 隐私临时地址（可 Google 查阅相关资料），另一种方式是使用自动准入客户端，例如前面提到的 auth-thu 的 goauthing6.service</p>
+<h3 id="systemd-networkd-ipv4">systemd-networkd 有线连接时无法获取 ipv4 地址<a class="headerlink" href="#systemd-networkd-ipv4" title="Permanent link">&para;</a></h3>
+<p>清华校园网 DHCPv4 服务器不接受非 mac 地址的 client id，而 systemd-networkd 默认使用 duid。因而 systemd-networkd 获取不到 ip。</p>
+<p>解决方案：在 <code>/etc/systemd/network/&lt;your wired network&gt;.network</code> 中加入</p>
+<div class="highlight"><pre><span></span><code>[DHCP]
+ClientIdentifier=mac
+</code></pre></div>
 <h3 id="rfc-dhcpv6">不符合 RFC 的 DHCPv6<a class="headerlink" href="#rfc-dhcpv6" title="Permanent link">&para;</a></h3>
 <blockquote>
 <p>你校的 DHCPv6 server 会不承认某些 DUID，对于这样的 DHCP 请求会不予回应。即使向学校反映该问题，学校尝试让厂商修复后，该问题仍然存在。</p>
@@ -1698,7 +1718,7 @@ cp -r python/seafile $(python3 -m site --user-site)
 <div class="md-source-date">
   <small>
     
-      最后更新: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">November 30, 2024</span>
+      最后更新: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">December 31, 2024</span>
     
   </small>
 </div>
@@ -1709,7 +1729,7 @@ cp -r python/seafile $(python3 -m site --user-site)
 
 <div class="md-source-date">
     <small>
-        作者: <span class='git-page-authors git-authors'><a href='mailto:c@jia.je'>Chen</a></span>
+        作者: <span class='git-page-authors git-authors'><a href='mailto:c@jia.je'>Jiajie Chen</a></span>
     </small>
 </div>
 
