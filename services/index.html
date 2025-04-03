@@ -1482,7 +1482,7 @@
 </code></pre></div>
 <p>按照校园网建议，在配置 DNS 和 NTP 时，至少要使用校园网提供的服务。</p>
 <p>目前，校园网内只能使用校园网提供的 DNS，其余 DNS 不保证工作。</p>
-<p>对于更多校园网 DNS 特性及可能可用的公共 DNS 服务，参考 <a href="#dns-拦截">DNS 拦截</a></p>
+<p>对于更多校园网 DNS 特性及可能可用的公共 DNS 服务 (实际上被重定向到校园网 DNS)，参考 <a href="#dns">DNS 拦截</a></p>
 <h2 id="sslvpn">SSLVPN<a class="headerlink" href="#sslvpn" title="Permanent link">&para;</a></h2>
 <p>在 Linux 机器上没有 PULSE SECURE 客户端，除了可以使用 WEB VPN 外，也可使用 <code>openconnect</code> 来做到连接清华VPN。</p>
 <p>若是 Debian 系，包括 Ubuntu，可以使用</p>
@@ -1505,15 +1505,15 @@
 <p>值得注意的是，与清华无关的流量依旧按照原有路由发出，此行为与 Windows 下不同。（此项需求证）</p>
 <h2 id="_1">上网认证<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <h3 id="_2">校园网基础知识<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
-<p><a href="https://its.tsinghua.edu.cn/helpsystem/train/CampusNetworkLectureNotes201909.pdf">清华大学校园网使用简介</a>（由于网页升级链接已失效，可参阅本站的<a href="../file/CampusNetworkLectureNotes201909.pdf">备份</a>）</p>
-<p><a href="http://166.111.5.8/commsoft/helpsystem/wirednetwork/RealNameAuthentication20190121.pdf">准入上网使用说明</a>（本站<a href="../file/RealNameAuthentication20190121.pdf">备份</a>）</p>
+<p><a href="https://its.tsinghua.edu.cn/helpsystem/train/CampusNetworkLectureNotes201909.pdf">清华大学校园网使用简介</a>（由于网页升级链接已失效，可参阅本站的<a href="../file/CampusNetworkLectureNotes201909.pdf">备份</a>）(经过了若干年的发展, 其中部分内容可能已不准确)</p>
+<p><a href="http://166.111.5.8/commsoft/helpsystem/wirednetwork/RealNameAuthentication20190121.pdf">准入上网使用说明</a>（本站<a href="../file/RealNameAuthentication20190121.pdf">备份</a>）(此内容基本已过时)</p>
 <p><a href="https://its.tsinghua.edu.cn/helpsystem/wirednetwork/RealNameAuthenticationFAQ20190614.pdf">清华大学校园网有线局域网用户准入系统使用说明（问与答）</a>（由于网页升级链接已失效，可参阅本站的<a href="../file/RealNameAuthenticationFAQ20190614.pdf">备份</a>）</p>
 <p>上述文件太长不看版：在校园网中上网分为两步，一步是准入，另一步是准出。</p>
 <p>没有准入与准出时，机器只能 ping 通 <code>166.111.8.28</code> 与 <code>2402:f000:1:801::8:28</code>，如果你有相应 v4 与 v6 地址。校内其他地址不通。</p>
 <p>对于 IPv4 而言，当有准入而没有准出时，机器可以 ping 通校内机器，但不能 ping 通校外机器，即不能上外网。只有当有准入而且有准出时，机器可以连接外网。</p>
 <p>对于 IPv6 而言，v6 只有准入这一步，有了准入，即可以连接外网。</p>
 <p>对于 2 层接入的机器（紫荆宿舍网，教学楼无线网络，一些院系的网络），v4 认证与 v6 认证是联动进行的，即当 v4 准入时，v6 同时也准入。对于 3 层接入的机器（一些院系的网络），v4 与 v6 需要分别准入。</p>
-<p><code>Tsinghua-Secure</code> 使用的是另一套认证系统。</p>
+<p><code>Tsinghua-Secure</code> 使用的是另一套认证系统 (802.1X)。</p>
 <h3 id="_3">命令行认证 自动认证<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
 <p>参见 <a href="../utils/">utils.md</a> 中的认证工具汇总。</p>
 <p>以下参考 <a href="https://github.com/z4yx/GoAuthing">GoAuthing</a></p>
@@ -1523,29 +1523,25 @@
 auth-thu<span class="w"> </span>deauth<span class="w"> </span><span class="c1"># 解除v4准入</span>
 auth-thu<span class="w"> </span>auth<span class="w"> </span>-6<span class="w"> </span><span class="c1"># v6准入</span>
 auth-thu<span class="w"> </span>deauth<span class="w"> </span>-6<span class="w"> </span><span class="c1"># 解除v6准入</span>
-auth-thu<span class="w"> </span>login<span class="w"> </span><span class="c1"># v4准出</span>
-auth-thu<span class="w"> </span><span class="nb">logout</span><span class="w"> </span><span class="c1"># 解除v4准出</span>
 auth-thu<span class="w"> </span>online<span class="w"> </span><span class="c1"># 保持机器在线</span>
 </code></pre></div>
 <p>普通用户将其放在家目录下，作为命令行工具使用，即可满足大部分认证需求。</p>
-<p>已知问题：在用户通过<code>auth-thu auth -C</code>（仅准入）后调用<code>auth-thu login</code>（仅准出），准出会失败。</p>
 <h4 id="_5">自动认证<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h4>
 <p>对于系统管理员来说，可能存在服务器实现自动认证的需求。</p>
 <p>下载好文件以后请合理放置在相应目录（如 /usr/local/bin）下，同时将配置文件放在合理目录下，即可使用</p>
 <p>要做到自动 <strong>准出</strong>，需将其中附带的 <code>goauthing.service</code> 或 <code>goauthing@.service</code> 放置 <code>/etc/systemd/system/</code> 文件夹下 ，并调整相应内容以符合程序文件以及配置文件的路径，使用</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>goauthing.service
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>--now<span class="w"> </span>goauthing.service
 </code></pre></div>
 <p>启动相应服务，即可达到自动认证的目的。如果要实现账户信息储存在用户家目录中而不是 <code>/etc</code> 中，可以参考 <code>goauthing@.service</code>。</p>
-<p>如果要实现 <code>v6</code> 的自动准入，可参考 <code>goauthing6.service</code> 和 <code>goauthing6@.service</code>。如果只要 v4 的自动准入，需要将 <code>goauthing.service</code> 中的 <code>auth</code> 变为 <code>auth -C</code>，且删除 <code>login</code> 一行。</p>
+<p>如果要实现 <code>v6</code> 的自动准入，可参考 <code>goauthing6.service</code> 和 <code>goauthing6@.service</code>。如果只要 v4 的自动准入，需要将 <code>goauthing.service</code> 中的 <code>auth</code> 变为 <code>auth -C</code>。</p>
 <p>如果有打包者将此打包，请 PR。目前在 AUR 中存在 <code>auth-thu-bin</code> 包（<code>auth-thu</code> 包已经过时）。</p>
 <h4 id="windows">自动认证 （Windows）<a class="headerlink" href="#windows" title="Permanent link">&para;</a></h4>
 <p>对于 Windows 用户，可以利用任务计划程序库新建开机自动启动的任务，以实现自动认证，可以参考 <a href="https://aajax.top/2024/03/10/GoAuthingWindows/">这篇文章</a> 建立循环执行的登录脚本并设置在开机时启动。</p>
 <h3 id="_6">远端服务器代认证<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
 <p>（从笔者的经历来看，usereg 的对准入准出成功和失败的反馈较少，建议采用命令行以及网页认证，而只将 usereg 作为状态面板使用）</p>
-<p>在某些服务器上无法使用浏览器打开 <a href="https://net.tsinghua.edu.cn">net.tsinghua.edu.cn</a> 来认证，只能使用 <a href="### 命令行认证 自动认证">命令行工具</a> 或「准入代认证」的方式来实现准入。</p>
+<p>在某些服务器上无法使用浏览器打开 <a href="https://net.tsinghua.edu.cn">net.tsinghua.edu.cn</a> 来认证，只能使用 <a href="#_3">命令行工具</a> 或「准入代认证」的方式来实现准入。</p>
 <p>对于代认证，需要先知道服务器的 IPv4 地址，形如 <code>166.111.x.x</code> 或 <code>59.66.x.x</code> 或 <code>101.x.x.x</code>，之后打开 <a href="https://usereg.tsinghua.edu.cn">usereg.tsinghua.edu.cn</a> 「准入代认证」部分，填入 IP 即可准入，在准入时可以选择是否打开准出。</p>
 <p>对于某些三层接入的机器，如果要实现 v6 的准入，也可在「准入代认证」中实现准入。</p>
-<p>对于有些服务器存在准入但没有准出的情况，可以使用「连线其他 IP」实现准出。 </p>
 <p>关于准入与准出的问题，欢迎 PR。</p>
 <p>关于 IPv4 和 IPv6 在准入准出上线与掉线时的表现，以及校内二层接入/三层接入的表现，欢迎 PR</p>
 <h3 id="_7">远端服务器网页认证<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
@@ -1556,13 +1552,16 @@ auth-thu<span class="w"> </span>online<span class="w"> </span><span class="c1">#
 <p>尤其要注意的是，不能直接访问 auth4/auth6 来进行认证（参考问与答），需要通过跳转的方式来访问 auth4/auth6 以获取正确的 ac_id. 一般情况下可以访问 info/learn/login 来跳转，也可通过 3.3.3.3 和 [3:3:3::3] 来跳转。后者对于三层接入的用户来说是一个较为方便的访问 auth6 的方案。</p>
 <h3 id="_8">可信服务器自动代认证<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
 <p>考虑到网络管理员有用自己的账号对不完全可信的服务器 (如课题组服务器) 做认证的需求, 笔者写了一个简单的 Python 脚本以实现即便在未准入的情况下也能向外传递信息, 以期利用可信服务器对不可信服务器进行代准入.</p>
-<p>此脚本利用了校园网准入系统的特性 (也算是漏洞?), 即便在未准入情况下, 设备的 UDP Port 67 (DHCP) 单播包可以穿越接入层交换机的防火墙配置, 实现了未准入条件下的单向信道.</p>
+<p>此脚本利用了校园网准入系统的特性 (也算是漏洞?), 即便在未准入情况下, 设备的 UDP Port 67 (DHCP) 单播包可以穿越接入层交换机的 ACL 配置, 实现了未准入条件下的单向信道.</p>
 <p>此脚本开源于 <a href="https://github.com/84634E1A607A/proxy_authing">Github</a>, 其功能实现较为简陋, 有诸多不足, 如目前无法自动检测网络配置变更; 但相信 Client 和 Server 都相当少 (~150 行) 的 Python 代码可以让读者自由拓展其功能.</p>
 <p>脚本的 Server 目前可以检测并认证 Client. 可以更改 Server 以在成功验证 Client 身份后调用前述具有代准入功能的脚本 (如 GoAuthing).</p>
 <h3 id="tsinghua-secure">Tsinghua-Secure<a class="headerlink" href="#tsinghua-secure" title="Permanent link">&para;</a></h3>
-<p>如果是校内环境，首先连接 <code>Tsinghua-Secure无线网使用指南</code> 进入 <a href="https://usereg.tsinghua.edu.cn">usereg.tsinghua.edu.cn</a> , 登录后在 <code>自注册及修改口令处</code> 设置 Tsinghua-Secure 使用的密码，此密码不需要与 info 密码相同。</p>
+<p>如果是校内环境，首先连接 <code>Tsinghua-Secure无线网使用指南</code> 进入 <a href="https://usereg.tsinghua.edu.cn">usereg.tsinghua.edu.cn</a> , 登录后在 <code>自注册及修改口令处</code> 设置 Tsinghua-Secure 使用的密码，此密码不需要与 info 密码相同。尽管如此, 我们仍建议使用强密码登录.</p>
+<p>由于官方文档 (SOP) 曾指引用户 "不校验证书" 而导致了一些安全问题 (详见 <a href="https://aajax.top/2025/02/06/TsinghuaSecure/">这篇文章</a>), 我们建议用户校验学校的证书, 参考信息化技术中心发布的最新 SOP <a href="https://software.tsinghua.edu.cn/helpsystem/wifi/Tsinghua-Secure-Instruction220250225.pdf">校园无线网Tsinghua-Secure 认证登录配置说明</a> (本站<a href="../file/Tsinghua-Secure-Instruction220250225.pdf">备份</a>).</p>
+<p>此官方 SOP 笔者参与了编写, 在 Linux 校验证书的时候不够准确 (是笔者的锅, 但是 SOP 是正确且安全的), 但笔者发现时此 SOP 已经发布, 无法更改. 对于 Linux, 建议信任 <code>/etc/ssl/certs/ca-certificates.crt</code> (即使用系统证书), 以防在 Tsinghua-Secure 更换证书时由于信任的证书过于具体而导致无法连接.</p>
+<p>在准入认证系统升级后, PEAP 第二阶段采用 TLS1.2, ECDHE 方式建立连接 (此前是 TLS1.0 和 ECDH), 因此后文的部分问题已不适用并被删除.</p>
 <h4 id="networkmanager">NetworkManager<a class="headerlink" href="#networkmanager" title="Permanent link">&para;</a></h4>
-<p>设置好后，可以使用 <code>NetworkManager</code> 连接该 Wifi，可以参考 its 的文档 <a href="https://its.tsinghua.edu.cn/info/1333/2318.htm">清华大学无线校园网 802.1x 认证登录客户端配置说明</a>（本站<a href="../file/tsinghua-secure-config.pdf">备份</a>）</p>
+<p>设置好后，可以使用 <code>NetworkManager</code> 连接该 Wifi，可以参考 its 的文档 <a href="https://its.tsinghua.edu.cn/info/1333/2318.htm">清华大学无线校园网 802.1x 认证登录客户端配置说明</a>（本站<a href="../file/tsinghua-secure-config.pdf">备份</a>, 更新的文档 <a href="https://software.tsinghua.edu.cn/helpsystem/wifi/Tsinghua-Secure-Instruction220250225.pdf">校园无线网Tsinghua-Secure 认证登录配置说明</a> (本站<a href="../file/Tsinghua-Secure-Instruction220250225.pdf">备份</a>)</p>
 <p>样例配置 <code>/etc/NetworkManager/system-connections/Tsinghua-Secure.nmconnection</code> 如下</p>
 <div class="highlight"><pre><span></span><code>[connection]
 id=Tsinghua-Secure
@@ -1585,6 +1584,8 @@ eap=peap;
 identity=&lt;username&gt;@tsinghua
 password=&lt;redacted&gt;
 phase2-auth=mschapv2
+ca-cert=/etc/ssl/certs/ca-certificates.crt
+domain-suffix-match=wifi.tsinghua.edu.cn
 
 [ipv4]
 dns-search=
@@ -1600,17 +1601,6 @@ token=::114:514:1919:810
 [proxy]
 </code></pre></div>
 <p>该样例配置仅启用了 IPv6 并获取特定后缀（请自行挑选后缀以免地址相撞），同时使用了 <code>@tsinghua</code> 的 <code>identity</code> 以保证不占用准出名额。</p>
-<p>特别要注意的是，如果你同时符合下面三个条件：</p>
-<ol>
-<li><code>NetworkManager</code> 使用了 <code>wpa_supplicant</code> 后端 </li>
-<li>使用了 3.0.0 及以上版本的 <code>openssl</code></li>
-<li>使用的发行版没有给 <code>wpa_supplicant</code> 打上 <a href="https://launchpad.net/ubuntu/+source/wpa/2:2.10-6ubuntu2">修复 tls 1.0/1.1 连接的 patch</a> （目前确认 Ubuntu 有 patch，NixOS 没有 patch）</li>
-</ol>
-<p>那么你的 <code>NetworkManager</code> 可能由于 tls 1.0 连接被禁用而连不上 <code>Tsinghua-Secure</code>，此时有以下两种解决方法，任意一种都能解决：</p>
-<ol>
-<li>升级 NetworkManager 到 <code>1.41.5-dev</code> 及以上，准确的说是确保 <a href="https://gitlab.freedesktop.org/NetworkManager/NetworkManager/-/commit/98dd4180ec163af63fe1e0fda00158ac7f0047df">这个 commit</a> 已经被包含。在上述配置文件的 <code>[802-1x]</code> 一节中加入一行 <code>phase1-auth-flags=32</code>（<code>NetworkManager</code> 中 <code>tls-1-0-enable</code> 这一选项对应 <code>0x20</code>，换算成十进制是 <code>32</code>，这一换算关系目前没有在文档里记录，所以不保证 32 这个数字始终有效。更能保证有效的方法是手动用 <code>nmcli</code> 设置 <code>Tsinghua-Secure</code> 中设置 <code>802-1x.phase1-auth-flags</code> 为 <code>tls-1-0-enable</code>）。</li>
-<li>给自己的 <code>wpa_supplicant</code> 打上前面提到的 patch。</li>
-</ol>
 <h4 id="wpa_supplicant">wpa_supplicant<a class="headerlink" href="#wpa_supplicant" title="Permanent link">&para;</a></h4>
 <p>也可使用 <code>wpa_supplicant</code> 完成相应 wifi 连接。安装 <code>wpa_supplicant</code>，编辑 <code>/etc/wpa_supplicant/wpa_supplicant-nl80211-XXXX.conf</code>， 其中 <code>XXXX</code> 是本机网卡名称，输入以下配置</p>
 <div class="highlight"><pre><span></span><code>ctrl_interface=/var/run/wpa_supplicant
@@ -1624,7 +1614,7 @@ network={
         eap=PEAP
         identity=&quot;username&quot;
         password=&quot;password&quot;
-        # 使用 3.0.0 及以上版本的 openssl，同时发行版没有打上相应 patch 的话（参见上一节），tls 1.0/1.1 会被默认禁用，无法连接 Tsinghua-Secure。下面这行可以解除禁用
+        # 使用 3.0.0 及以上版本的 openssl，同时发行版没有打上相应 patch 的话（参见上一节），tls 1.0/1.1 会被默认禁用，无法连接 Tsinghua-Secure。下面这行可以解除禁用 (在准入认证系统升级后已不必要)
         phase1=&quot;tls_disable_tlsv1_0=0&quot;
         phase2=&quot;auth=MSCHAPV2&quot;
         priority=9
@@ -1636,6 +1626,8 @@ network={
 <p>即可连接。</p>
 <p>注：本配置由<a href="http://hep.tsinghua.edu.cn/~orv">orv</a>贡献。</p>
 <h4 id="iwd">iwd<a class="headerlink" href="#iwd" title="Permanent link">&para;</a></h4>
+<p>在准入认证系统升级后, 以下问题已被修复.</p>
+<blockquote>
 <p>由于 Tsinghua-Secure 的证书问题（dhparams 中 p 的长度仅为 1024，不符合 <a href="https://elixir.bootlin.com/linux/v6.0/source/crypto/dh.c#L52">Linux 内核的 1536 长度需求</a>），而 iwd 依赖于内核的密码学工具，默认使用 iwd 无法连接。</p>
 <p><a href="https://github.com/NickCao">NickCao</a> 为此提供了 <a href="https://github.com/NickCao/dhack">dhack 内核模块</a> 与 ell 工具补丁（如下）；前者通过劫持相应符号实现补丁，后者在 nix 构建软件包时直接替换源码中的参数。用户可以依此类推自行构建内核与工具。</p>
 <div class="highlight"><pre><span></span><code>iwd<span class="o">.</span>override <span class="p">{</span>
@@ -1647,6 +1639,7 @@ network={
   <span class="p">});</span>
 <span class="p">}</span>
 </code></pre></div>
+</blockquote>
 <p>另外配置如下</p>
 <div class="highlight"><pre><span></span><code>[Security]
 EAP-Method=PEAP
@@ -1664,7 +1657,7 @@ AutoConnect=true
 <h2 id="_9">校园网特性讨论<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h2>
 <h3 id="_10">二层隔离/邻居发现隔离<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h3>
 <p>校园网的一大特性，是二层隔离/邻居发现隔离。对于v4来说，是前者；对于v6来说，是后者。这个机制为了安全而设计，但对不少开发者/使用者来说较为不方便。</p>
-<p>这个特性本质上是核心交换机对广播域进行了划分，甚至使得只有一个客户端与网关在一个广播域中。</p>
+<p>这个特性本质上是接入交换机丢弃了两个接入端口之间的包 (端口隔离) (对于有线网); 和 AP 丢弃了 STA 发给另一个 STA 的包 (AP 隔离) (对于无线网).</p>
 <h4 id="ipv4">IPv4<a class="headerlink" href="#ipv4" title="Permanent link">&para;</a></h4>
 <p>当我们分配到例如 59.66.130.xx/24 的 IP 时，如果我们想连接 59.66.130.yy/24，我们可能会发现无法连接。注意到这两个在一个 /24 中，即一个二层中，这种情况下两台机器会通过ARP发现对方，但在学校的一些机制下，ARP不能工作。</p>
 <p>这种情况下，需要在两台机器上增加以下路由。</p>
@@ -1704,6 +1697,16 @@ sysctl<span class="w"> </span>net/ipv6/conf/wlan0/autoconf<span class="o">=</spa
 sysctl<span class="w"> </span>net/ipv6/conf/wlan0/forwarding<span class="o">=</span><span class="m">0</span>
 </code></pre></div>
 <p>以上命令的一些参数请按需替换。我们可以将以上命令放在启动脚本中，使得自动配置 token。</p>
+<p>对于 systemd-networkd, 可以参考以下配置:</p>
+<div class="highlight"><pre><span></span><code>[Match]
+Name=wlo1
+
+[Network]
+DHCP=ipv4
+
+[IPv6AcceptRA]
+Token=::114:514:1919:810
+</code></pre></div>
 <h4 id="ipv4ipv6">尝试获取某一特定IPv4、IPv6地址<a class="headerlink" href="#ipv4ipv6" title="Permanent link">&para;</a></h4>
 <p>你校对于DHCP请求（v4与v6术语不同，不严谨表述）中的特定地址请求是宽容的。</p>
 <p>dhcpcd 配置</p>
@@ -1729,7 +1732,7 @@ Apr 02 07:00:34 Zenith dhcpcd[497]: enp3s0: adding address 2402:f000:4:3:888:192
 <p>一些机器（例如 Windows 的默认设置和一些 Linux 的默认设置）配置了隐私扩展后，在 SLAAC 环境下其 IPv6 地址会不断改变，由于学校的准入是对 IPv6 地址进行的，具体表现就是在用 auth6 准入 IPv6 一段时间后就失去了准入，需要重新登录 auth6。</p>
 <p>一种方法是关掉 IPv6 隐私临时地址（可 Google 查阅相关资料），另一种方式是使用自动准入客户端，例如前面提到的 auth-thu 的 goauthing6.service</p>
 <h3 id="systemd-networkd-ipv4">systemd-networkd 有线连接时无法获取 ipv4 地址<a class="headerlink" href="#systemd-networkd-ipv4" title="Permanent link">&para;</a></h3>
-<p>清华校园网 DHCPv4 服务器不接受非 mac 地址的 client id，而 systemd-networkd 默认使用 duid。因而 systemd-networkd 获取不到 ip。</p>
+<p>清华校园网 DHCPv4 服务器不接受非 mac 地址的 client id，而 systemd-networkd 默认使用 duid。因而 systemd-networkd 获取不到 ip。这可能与 DHCPv4 的 Client ID 用于准入联动上线和获取用户 MAC 地址有关.</p>
 <p>解决方案：在 <code>/etc/systemd/network/&lt;your wired network&gt;.network</code> 中加入</p>
 <div class="highlight"><pre><span></span><code>[DHCP]
 ClientIdentifier=mac
@@ -1750,6 +1753,7 @@ ClientIdentifier=mac
 <div class="highlight"><pre><span></span><code>[DHCPv6]
 DUIDType=link-layer-time
 </code></pre></div>
+<p>这同样可能与 DHCPv6 的 DUID 用于准入联动上线和获取用户 MAC 地址有关.</p>
 <h3 id="30">30分钟无流量掉准入<a class="headerlink" href="#30" title="Permanent link">&para;</a></h3>
 <p>根据之前提到的《准入上网使用说明》，计算机长时间（目前为 30 分钟）不使用网络时，认证系统会关闭其网络连接； <del>服务器如有必要可每 10 分钟 ping 1 次 ping.tsinghua.edu.cn。</del>（已失效）</p>
 <h3 id="_12">掉准出后无法准出<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h3>
@@ -2108,7 +2112,7 @@ cp -r python/seafile $(python3 -m site --user-site)
     <span class="md-icon" title="最后更新">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">2025年4月2日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">2025年4月3日</span>
   </span>
 
     
@@ -2124,7 +2128,7 @@ cp -r python/seafile $(python3 -m site --user-site)
     </span>
     <nav>
       
-        <a href="mailto:c@jia.je">Jiajie Chen</a>
+        <a href="mailto:c@jia.je">Chen</a>
     </nav>
   </span>
 
